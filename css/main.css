@@ -1,0 +1,33 @@
+body{
+    background-color: antiquewhite;
+}
+h1 {
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.board {
+    background-color: white;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+table {
+    margin: 0 auto;
+}
+
+/* .show{
+    display: block;
+} */
+td {
+    border: 1px solid black;
+    font-size: 50px;
+    width: 50px;
+    height: 50px;
+}
+
+.show {
+    color: black;
+    transition: .1s;
+}
