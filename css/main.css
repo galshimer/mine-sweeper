@@ -1,14 +1,28 @@
-body{
+body {
     background-color: antiquewhite;
 }
+.dark{
+    background-color: 	 #000033;
+    color: azure;
+}
+
+* {
+    box-sizing: border-box;
+    text-align: center;
+}
+
 h1 {
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
 }
 
+.lives {
+    font-size: 20px
+}
+
 .board {
     background-color: white;
-    color: white;
+    color: black;
     text-align: center;
     cursor: pointer;
 }
@@ -17,17 +31,50 @@ table {
     margin: 0 auto;
 }
 
-/* .show{
-    display: block;
-} */
 td {
     border: 1px solid black;
-    font-size: 50px;
+    font-size: 40px;
     width: 50px;
     height: 50px;
 }
 
-.show {
-    color: black;
-    transition: .1s;
+.timer {
+    margin: auto;
+    
+}
+
+footer {
+    font-family: Cursive;
+    color: #1a4019;
+
+}
+
+.restart {
+    text-align: center;
+    cursor: pointer;
+    display: block;
+    margin: auto;
+
+}
+
+img {
+    width: 40px;
+}
+
+.modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background-color: green;
+    border-radius: 10%;
+    padding: 20px;
+}
+
+.clicked {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+.emoji {
+    font-size: 30px;
+    margin-bottom: 5px;
 }

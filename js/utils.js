@@ -1,5 +1,5 @@
 function getClassName(location) {
-	const cellClass = 'cell-' + location.i + '-' + location.j
+	var cellClass = 'cell-' + location.i + '-' + location.j
 	return cellClass
 }
 function getRandomInt(min, max) {
