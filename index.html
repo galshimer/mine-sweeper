@@ -12,20 +12,22 @@
     <h1> mine sweeper</h1>
     <div hidden class="modal"><span>GAME OVER</span></div>
     <div><button class="dark" onclick="onDarkMode(this)"> Dark Mode</button></div>
+    <div class="top">
+        <span class="lives"></span>
+        <span class="timer"> TIME: 0.00</span>
+    </div>
+    <div class="safe-click" onclick="onSafeCell()"><span></span>
+    </div>
+    <div class="restart">
+        <button class="emoji" onclick="onInit()">😄</button>
+    </div>
+    <div>
+        <button class="btn" data-size="4" onclick="chooseLevelSize(this)">Beginner</button>
+        <button class="btn" data-size="8" onclick="chooseLevelSize(this)">Medium</button>
+        <button class="btn" data-size="12" onclick="chooseLevelSize(this)">Expert</button>
+    </div>
     <table>
         <tbody class="board" id="myBoard">
-            <div>
-                <span class="lives"></span>
-                <span class="timer"> TIME: 0.00</span>
-            </div>
-            <div class="restart">
-                <button class="emoji" onclick="onInit()">😄</button>
-                <div>
-                <button data-size="4" onclick="chooseLevelSize(this)">Beginner</button>
-                <button data-size="8" onclick="chooseLevelSize(this)">Medium</button>
-                <button data-size="12" onclick="chooseLevelSize(this)">Expert</button>
-            </div>
-            </div>
         </tbody>
     </table>
 

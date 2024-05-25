@@ -9,6 +9,7 @@ var gStartTime
 var gIsFirstClick = true
 var gLives = 3
 var gIsDark = false
+var gSafeClick
 
 var gLevel = {
     size: 4,
@@ -23,7 +24,6 @@ const gGame = {
 
 function onInit() {
     resetTimer()
-
     gLives = 3
     gBoard = buildBoard(gLevel.size)
     renderBoard(gBoard)
@@ -33,6 +33,9 @@ function onInit() {
     var elEmoji = document.querySelector('.emoji')
     elEmoji.innerText = '😄'
     onCloseModal()
+    gSafeClick = 3
+    var elSpan = document.querySelector('.safe-click span')
+    elSpan.innerText = 'safe clicks ' + gSafeClick
 
 }
 
@@ -54,7 +57,6 @@ function buildBoard(size) {
             gBoard[i][j] = createCell()
         }
     }
-    console.table(gBoard)
     for (var i = 0; i < gLevel.mines; i++) {
         gBoard[getRandomInt(0, gLevel.size)][getRandomInt(0, gLevel.size)].isMine = true
     }
@@ -88,11 +90,11 @@ function renderBoard(board) {
 
 function onCellClicked(elCell, cellI, cellJ) {
     if (gLives === 0) return
+    var cell = gBoard[cellI][cellJ]
     if (gIsFirstClick) {
         startTimer()
         gIsFirstClick = false
     }
-    var cell = gBoard[cellI][cellJ]
     if (cell.isShown || cell.isMarked) return
     cell.isShown = true
     gGame.shownCount++
@@ -101,13 +103,17 @@ function onCellClicked(elCell, cellI, cellJ) {
     elCell.innerHTML = cell.minesAroundCount > 0 ? cell.minesAroundCount : EMPTY
     if (cell.isMine) {
         elCell.innerHTML = MINE
+        playSound()
         gLives--
         var lives = document.querySelector('.lives')
         lives.innerText = gLives + '❤️'
         checkGameOver()
+        elCell.classList.add('shake')
     } else {
-        if (cell.minesAroundCount === 0)
+        if (cell.minesAroundCount === 0) {
             expandShown(gBoard, elCell, cellI, cellJ)
+        }
+        colorNum(elCell)
     }
     isVictory()
 }
@@ -177,17 +183,20 @@ function checkGameOver() {
         onOpenModal()
         var elEmoji = document.querySelector('.emoji')
         elEmoji.innerText = '😵‍💫'
+        gGame.isOn = false
     }
 }
 
 function isVictory() {
-    var totalCells = gBoard.length * gBoard[0].length
+    var totalCells = gBoard.length ** 2
     if (gGame.shownCount + gGame.markedCount === totalCells &&
         gGame.markedCount === gLevel.mines) {
         var elEmoji = document.querySelector('.emoji')
         elEmoji.innerText = '🥳'
         onOpenModal()
         clearInterval(gTimerInterval)
+        gGame.isOn = false
+        onInit()
     }
 }
 
@@ -222,10 +231,41 @@ function expandShown(board, elCell, cellI, cellJ) {
             currCell.minesAroundCount = setMinesNegsCount(i, j)
             elCurrNeg.classList.add('clicked')
             elCurrNeg.innerHTML = currCell.minesAroundCount > 0 ? currCell.minesAroundCount : EMPTY
-
+            colorNum(elCurrNeg)
             if (currCell.minesAroundCount === 0) {
-                expandShown(board, elCell, i, j);
+                expandShown(board, elCurrNeg, i, j);
             }
         }
     }
+}
+
+function onSafeCell() {
+    var emptyCells = []
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard.length; j++) {
+            var currCell = gBoard[i][j]
+            if (currCell.isMine || currCell.isShown || currCell.isMarked) continue
+            var obj = { i, j }
+            emptyCells.push(obj)
+        }
+    }
+    var idx = getRandomInt(0, emptyCells.length)
+    var safeCell = emptyCells[idx]
+    var elSafeCell = document.querySelector(`.cell-${safeCell.i}-${safeCell.j}`)
+    if (gSafeClick <= 0) return
+    gSafeClick--
+    elSafeCell.classList.add('safe')
+    setTimeout(() => {
+        elSafeCell.classList.remove('safe')
+    }, 3000);
+    var elSpan = document.querySelector('.safe-click span')
+    elSpan.innerText = 'safe clicks ' + gSafeClick
+}
+function colorNum(elCell) {
+    if (elCell.innerText === '1') elCell.style.color = 'blue'
+    if (elCell.innerText === '2') elCell.style.color = 'green'
+    if (elCell.innerText === '3') elCell.style.color = 'red'
+    if (elCell.innerText === '4') elCell.style.color = 'purple'
+    if (elCell.innerText === '5') elCell.style.color = 'orange'
+
 }
